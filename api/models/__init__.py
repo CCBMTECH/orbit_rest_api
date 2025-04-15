@@ -4,10 +4,10 @@ from . import rest_api_tokens
 from . import ir_model
 
 
-# from . import company
-# from . import product_template
-# from . import partner
-# from . import payment_details
+from . import company
+from . import product_template
+from . import partner
+from . import payment_details
 
 # from . import sale
 # from . import sale_order_mail
