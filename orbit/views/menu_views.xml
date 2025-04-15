@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--OrbitCity menu item -->
+    <menuitem id="orbit_menu_root" name="CCBMSHOP" sequence="95" web_icon="orbit,static/src/img/logo.png">
+
+        <!-- Menu CRM -->
+        <menuitem id="orbit_menu_crm" name="CRM" sequence="5">
+
+            <menuitem 
+                id="orbit_crm_menu" 
+                name="CRM" 
+                action="crm.crm_lead_action_pipeline" 
+                groups="orbit.com_group_user"
+                sequence="1"
+            />
+
+            <!-- Menu Commentaires sur les produits -->
+            <!-- <menuitem id="menu_comments" name="Commentaires Produits" 
+                action="action_comment_on_product" 
+                groups="orbit.sale_ccbmshop_group_user,orbit.com_group_user" 
+                sequence="10" />
+            <menuitem id="menu_comments_simple" name="Commentaires Simples" 
+                action="action_comments_simple" 
+                groups="orbit.sale_ccbmshop_group_user,orbit.com_group_user" 
+                sequence="20"/> -->
+
+        </menuitem>
+
+        <!-- Menu Operations -->
+        <menuitem id="orbit_menu_ops" name="Operations" sequence="7">
+            <menuitem id="orbit_journaux" name="Journaux" action="account.action_account_journal_form" groups="orbit.compta_ccbmshop_group_user" sequence="1"/>
+            <menuitem id="orbit_client_factures" name="Factures Client" action="account.action_move_out_invoice_type" groups="orbit.compta_ccbmshop_group_user" sequence="2"/>
+            <menuitem id="orbit_client_payments" name="Paiements client" action="account.action_account_payments" groups="orbit.caisse_group_user" sequence="3"/>
+            <menuitem id="orbit_account_moves_all_menu" name="Ecritures Comptables" action="account.action_account_moves_all_a" groups="orbit.compta_ccbmshop_group_user" sequence="4"/>
+        </menuitem>
+
+        <!-- Menu Stock Produits -->
+        <menuitem id="orbit_menu_stock_products" name="Stock" sequence="9">
+            
+            <menuitem id="orbit_menu_shipping" name="Livraisons" 
+                action="stock.action_picking_tree_ready" 
+                groups="orbit.stock_ccbmshop_group_user,orbit.shipping_ccbmshop_group_user" 
+                sequence="1"    
+            />
+            <menuitem id="orbit_menu_stock" name="Stocks" 
+                action="stock.action_product_stock_view" 
+                groups="orbit.stock_ccbmshop_group_user" 
+                sequence="2"
+            />
+            <menuitem id="orbit_menu_products" name="Produits" 
+                action="sale.product_template_action" 
+                groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
+                sequence="3"
+            />
+            <menuitem id="orbit_menu_categories" name="Categories" 
+                action="product.product_category_action_form" 
+                groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
+                sequence="4"
+            />
+            <menuitem id="orbit_menu_products_tags" name="Produits Tags" 
+                action="product.product_tag_action" 
+                groups="orbit.stock_ccbmshop_group_user,orbit.sale_ccbmshop_group_user" 
+                sequence="5"
+            />
+            
+        </menuitem>
+
+        <!-- Menu Ventes -->
+        <menuitem id="orbit_menu_sale" name="Ventes" sequence="11" groups="orbit.sale_ccbmshop_group_user">
+            <menuitem id="orbit_order_menu" name="Commandes" action="orbit.orbit_sale_order" groups="orbit.sale_ccbmshop_group_user" sequence="1"/>
+            <menuitem id="orbit_preorder_menu" name="Précommandes" action="orbit.orbit_preorder" groups="orbit.sale_ccbmshop_group_user" sequence="2"/>
+            <menuitem id="orbit_creditorder_menu" name="Commandes à crédit" action="orbit.orbit_creditorder" groups="orbit.credit_group_user" sequence="3"/>
+        </menuitem>
+
+        <!-- Menu Achats -->
+        <menuitem id="orbit_provisions_menu" name="Achats" sequence="12" groups="orbit.purchase_ccbmshop_group_user">
+            <menuitem id="orbit_purchase_order_menu"
+                name="Achats"
+                action="purchase.purchase_rfq"
+                sequence="3"/>
+        </menuitem>
+
+        <!-- Menu Programme Partenaire -->
+        <menuitem id="orbit_affiliate_Partner" name="Partenaires" sequence="13">
+            <menuitem id="orbit_person" name="Clients" action="orbit.orbit_partner_indiv" sequence="1"/>
+            <menuitem id="orbit_enterprise" name="Partenaires" action="orbit.orbit_partner_enterprise" sequence="2"/>
+            <menuitem id="orbit_affiliate" name="Affiliations" action="orbit.orbit_affiliate_action" groups="orbit.affiliate_group_user" sequence="3"/>
+        </menuitem>
+
+        <!-- Configurations -->
+        <menuitem id="orbit_menu_config" name="Configuration" groups="orbit.admin_group_user" sequence="15">
+            <menuitem id="orbit_menu_users" name="Users" action="base.action_res_users" groups="orbit.admin_group_user" sequence="1"/>
+            <!-- <menuitem id="orbit_menu_eq_commerciales" name="Teams Sale" action="sales_team.crm_team_action_config" sequence="2"/> -->
+            <menuitem id="menu_product_price_update_wizard" name="Mettre à jour les prix" action="orbit.action_update_product_prices" sequence="2"/>
+        </menuitem>
+
+    </menuitem>
+
+</odoo>

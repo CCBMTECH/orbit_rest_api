@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- ### categorie Groupe -->
+    <record id="orbit_groups" model="ir.module.category">
+        <field name="name">CCBMSHOP</field>
+        <field name="description">Helps you to manager your sales and employees</field>
+        <field name="sequence">170</field>
+    </record>
+
+    <!-- ### Groupes -->
+    <record id="admin_group_user" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">The Admin of CCBMSHOP</field>
+    </record>
+    <record id="emp_group_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">The users of CCBMSHOP</field>
+    </record>
+    <record id="affiliate_group_user" model="res.groups">
+        <field name="name">Affiliates</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">The affiliates of CCBMSHOP</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="com_group_user" model="res.groups">
+        <field name="name">Commerciaux</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Les Commerciaux</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="credit_group_user" model="res.groups">
+        <field name="name">commande credit</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Responsable commande à crédit</field>
+        <field name="implied_ids" eval="[(4, ref('com_group_user'))]"/>
+    </record>
+
+    <record id="sale_ccbmshop_group_user" model="res.groups">
+        <field name="name">Vendeur</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe gestionnaire de ventes</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="caisse_group_user" model="res.groups">
+        <field name="name">Caisse</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Gestionnaire de caisse</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+    
+    <record id="compta_ccbmshop_group_user" model="res.groups">
+        <field name="name">Compta</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe Compta</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="stock_ccbmshop_group_user" model="res.groups">
+        <field name="name">stock</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe Stock</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="shipping_ccbmshop_group_user" model="res.groups">
+        <field name="name">Livraison</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe Livraison</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+
+    <record id="purchase_ccbmshop_group_user" model="res.groups">
+        <field name="name">Achats</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe gestionnaire des achats</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <record id="ccbmshop_purchase_group_manager" model="res.groups">
+        <field name="name">Manager Achats</field>
+        <field name="category_id" ref="orbit_groups"/>
+        <field name="comment">Groupe management des achats</field>
+        <field name="implied_ids" eval="[(4, ref('emp_group_user'))]"/>
+    </record>
+
+    <!-- <record id="restrict_menu_user" model="ir.rule">
+        <field name="name">Restrict menu user</field>
+        <field name="model_id" ref="model_ir_ui_menu"/>
+        <field name="domain_force">[('restrict_user_ids', 'not in', user.id)]</field>
+    </record> -->
+
+</odoo>

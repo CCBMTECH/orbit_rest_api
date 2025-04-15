@@ -1,0 +1,160 @@
+
+<odoo>
+    <record id="view_product_form_inherit_preorder" model="ir.ui.view">
+        <field name="name">product.form.inherit.preorder</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="inside">
+                <span class="d-inline-block">
+
+                    <field name="en_promo"/>
+                    <label for="en_promo"/>
+
+                    <field name="is_preorder"/>
+                    <label for="is_preorder"/>
+
+                    <field name="is_creditorder"/>
+                    <label for="is_creditorder"/>
+
+                </span>
+            </xpath>
+            <xpath expr="//div[@name='pricing']" position="after">
+
+                <label for="preorder_price" attrs="{'invisible': [('is_preorder', '=', False)]}"/>
+                <div name="preorder_price" attrs="{'invisible': [('is_preorder', '=', False)]}">
+                    <field name="preorder_price" class="oe_inline" widget='monetary' 
+                        options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                </div>
+                
+                <label for="creditorder_price" attrs="{'invisible': [('is_creditorder', '=', False)]}"/>
+                <div name="creditorder_price" attrs="{'invisible': [('is_creditorder', '=', False)]}">
+                    <field name="creditorder_price" class="oe_inline" widget='monetary' 
+                        options="{'currency_field': 'currency_id', 'field_digits': True}" />
+                </div>
+
+                <label for="rate_price" attrs="{'invisible': [('en_promo', '=', False)]}"/>
+                <div name="rate_price">
+                    <field name="rate_price" class="oe_inline" widget='float' attrs="{'invisible': [('en_promo', '=', False)]}"/>
+                </div>
+            
+                <label for="promo_price" attrs="{'invisible': [('en_promo', '=', False)]}"/>
+                <div name="promo_price">
+                    <field name="promo_price" class="oe_inline" widget='monetary' attrs="{'invisible': [('en_promo', '=', False)]}"/>
+                </div>
+
+                <label for="markup_percentage"/>
+                <div name="markup_percentage">
+                    <field name="markup_percentage" string="Marge (%)" class="oe_inline" widget='float' />
+                </div>
+
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="after">
+            
+                <!-- Page Précommande masquée par défaut -->
+                <page string="Précommande" invisible="1">
+                    <group string="Preorder">
+                        <group>
+                            <field name="preorder_deadline" string="Dead Line preorder allowed"/>
+                            <field name="preorder_payment_option" string="option payment for delivered preorder"/>
+                        </group>                       
+                        <group>
+                            <field name="preorder_quantity_allow" string="Quantity Allowed preorder"/>
+                            <field name="preorder_threshold" string="Preorder threshold"/>
+                        </group>
+                    </group>
+                </page>
+
+                <!-- Page Quantités avec restriction de groupe -->
+                <!-- <page string="Quantités">
+                    <group string="Quantitiés stock">
+                        <group>
+                            <field name="qty_available" string="Quantité disponible" readonly="1"/>
+                            <field name="incoming_qty" string="Quantité attendue" readonly="1"/>
+                            <field name="virtual_available" string="Quantité prévisionnelle" 
+                                readonly="1" groups="stock.group_stock_user"/>
+                        </group>
+                        <group>
+                            <field name="ordered_qty" string="Qté commandée" readonly="1"/>
+                            <field name="preordered_qty" string="Qté précommandée" readonly="1"/>
+                            <field name="creditorder_qty" string="Qté créditée" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="outgoing_qty" string="Quantité total sortante" readonly="1"/>
+                            Décommenter si nécessaire -->
+                            <!-- <field name="free_qty" string="Quantité Libre" readonly="1"/>
+                            <field name="image_count" string="Nombre d'image" readonly="1"/>
+                        </group>
+                    </group>
+                </page> -->
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- ************************************ View Tree ************************************ -->
+    <record id="view_preorder_product_product_stock_tree" model="ir.ui.view">
+        <field name="name">product.product.tree.inherited</field>
+        <field name="model">product.template</field>
+        <!-- <field name="inherit_id" ref="product.product_product_tree_view"/> -->
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="type" position="after">
+                <field name="is_preorder" optional="hide" string="Précommandé"/>
+                <field name="is_creditorder" optional="hide" string="Commande à crédit"/>
+                <field name="ordered_qty" string="Qté commandée" optional="hide" sum="Total Order qty" />
+                <field name="preordered_qty" string="Qté précommandée" optional="hide" sum="Total Preorder qty"/>
+                <field name="creditorder_qty" string="Qté créditée" optional="hide" sum="Total creditorder qty"/>
+                <field name="image_count" string="Nombre d'image" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- ************************************ Search view ********************************* -->
+    <record id="ccbmshop_product_search_form_view" model="ir.ui.view">
+        <field name="name">product.product.ccbmshop.search</field>
+        <field name="model">product.product</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <!-- <field name="inherit_id" ref="product.product_search_form_view"/> -->
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <filter string="Disponible en précommande" name="is_preorder" domain="[('is_preorder', '=', True)]"/>
+                <filter string="Pas disponible en précommande" name="is_preorder" domain="[('is_preorder', '=', False)]"/>
+                <filter string="Disponible pour commande à crédit" name="is_creditorder" domain="[('is_creditorder', '=', True)]"/>
+                <filter string="Pas disponible pour commande à crédit" name="is_creditorder" domain="[('is_creditorder', '=', False)]"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- ************************************ Action view ********************************* -->
+    <record model="ir.actions.act_window" id="action_product_temple_ccbmshop">
+        <field name="name">CCBMSHOP Product</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">kanban,tree,form,activity</field>
+        <field name="view_id" ref="product.product_template_kanban_view"/>
+        <field name="search_view_id" ref="orbit.ccbmshop_product_search_form_view"/>
+        <!-- <field name="context">{'default_detailed_type': 'product'}</field> -->
+        <!-- <field name="context">{"search_default_filter_to_sell":1, "sale_multi_pricelist_product_template": 1}</field> -->
+        <!-- <field name="domain">[('detailed_type', '=', 'product')]</field> -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No stock to show
+            </p><p>
+                You must define a product for everything you sell or purchase,
+                whether it's a storable product for CCBMSHOP.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_update_product_prices" model="ir.actions.server">
+        <field name="name">Mettre à jour les prix des produits</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = env['product.template'].update_product_prices()
+        </field>
+    </record>
+
+</odoo>

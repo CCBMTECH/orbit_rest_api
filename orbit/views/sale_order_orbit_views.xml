@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ************************************ Inherit Form view sale order ************************************ -->
+    <record id="view_orbit_order_form" model="ir.ui.view">
+        <field name="name">orbit.sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <!-- ######################################### Header ######################################### -->
+            <field name="state" position="replace">
+                
+            </field>
+            <xpath expr="//header" position="after">
+                <header>
+                    <field name="partial_delivery_done" invisible="1"/>
+                    <field name="days_util_due" invisible="1"/>
+                    <field name="validation_rh_state" invisible="1"/>
+                    <field name="validation_admin_state" invisible="1"/>
+                    <field name="amount_residual"/>
+                    <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '=', 'creditorder'),]}" statusbar_visible="draft,sent,sale,to_delivered,delivered"/>
+                    <field name="state" widget="statusbar" attrs="{'invisible': [('type_sale', '!=', 'creditorder'),]}" statusbar_visible="draft,sent,validation,sale,to_delivered,delivered"/>
+                </header>
+            </xpath>
+            <field name="state" position="before">
+                <button name="action_to_delivered" type="object" string="à livrer" data-hotkey="q" class="btn-primary"
+                attrs="{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('amount_residual', '&gt;', 0), ('state', '!=', 'sale')]}"/>
+            </field>
+            <field name="state" position="before">
+                <button name="action_delivered" type="object" string="livré" data-hotkey="q" class="btn-primary"
+                attrs="{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('amount_residual', '&gt;', 0), ('state', '!=', 'to_delivered')]}"/>
+            </field>
+
+            <xpath expr="//button[@id='action_confirm']" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', 'not in', ['sent', 'validation'])]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][1]" position="attributes">
+                <attribute name="string">Facturer</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('type_sale', '!=', 'order'), ('state', 'not in', ['sale', 'to_delivered',])]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_cancel']" position="attributes">
+                <attribute name="string">Annuler</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['order', 'preorder', 'creditorder']), '|', ('state', 'not in', ['draft', 'sent', 'sale', 'validation', 'to_delivered', 'delivered']), ('id', '=', False)]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="attributes">
+                <attribute name="string">Retourner en Devis</attribute>
+                <attribute name="attrs">{'invisible': [('state', 'in', ['draft', 'to_delivered', 'delivered'])]}</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_draft']" position="after">
+                <button name="send_resp_client" string="Envoyer RH client" type="object" 
+                            class="oe_highlight" 
+                            attrs="{'invisible': ['|', ('state', 'not in',['draft', 'sent']), ('type_sale', '!=', 'creditorder')]}"
+                            icon="fa-paper-plane"/>
+
+                <button name="validate_rh" string="RH Vadilider" type="object" 
+                            class="oe_highlight" 
+                            attrs="{'invisible': ['|', ('validation_rh_state', 'not in',['pending', 'rejected']), ('type_sale', '!=', 'creditorder'),]}"
+                            icon="fa-thumbs-up"/>
+                            
+                <button name="approved_responsable" string="Approuver Commande" type="object" 
+                            class="oe_highlight" 
+                            attrs="{'invisible': ['|', ('validation_admin_state', 'not in',['pending', 'declined']), ('type_sale', '!=', 'creditorder'),]}"
+                            icon="fa-thumbs-up"/>
+            </xpath>
+
+            <!-- ######################################### Sheet ######################################### -->
+            <field name="partner_id" position="before">
+                <field name="type_sale" string="Type de vente" widget="badge" attrs="{'invisible': [('type_sale', 'not in', ['order', 'preorder', 'creditorder'])]}"
+                       decoration-primary="type_sale == 'order'"
+                       decoration-success="type_sale == 'preorder'"
+                       decoration-muted="type_sale == 'creditorder'"
+                />
+            </field>
+            <field name="payment_term_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <!-- <field name="pricelist_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field> -->
+        </field>
+    </record>
+
+    <!-- ************************************ Inherit Form view sale order for stock ************************************ -->
+    <record id="view_orbit_order_stock_form" model="ir.ui.view">
+        <field name="name">orbit.sale.order.inherited.stock.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+        <field name="arch" type="xml">
+
+            <!-- ######################################### Sheet ######################################### -->
+            <button name="action_view_delivery" position="attributes">
+                <attribute name="groups">orbit.shipping_ccbmshop_group_user</attribute>
+            </button>
+            
+        </field>
+    </record>
+
+    <!-- ************************************ View Search ************************************ -->
+    <record id="view_sales_order_filter_orbit" model="ir.ui.view">
+        <field name="name">sale.order.list.order</field>
+        <field name="model">sale.order</field>
+        <field name="priority" eval="15"/>
+        <field name="arch" type="xml">
+            <search string="Search Sales Order">
+                <field name="name" string="Order"
+                    filter_domain="['|', '|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self)]"/>
+                <field name="partner_id" operator="child_of"/>
+                <field name="user_id"/>
+                <field name="team_id" string="Sales Team"/>
+                <field name="order_line" string="Product" filter_domain="[('order_line.product_id', 'ilike', self)]"/>
+                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                <field name="state" string="State" />
+                <field name="type_sale" string="Type of Sale" />
+
+                <filter name="state_due" string="Commandes Échues" domain="[('state_due', '=', 'due')]" />
+                <separator/>
+                <filter string="My Orders" domain="[('user_id', '=', uid)]" name="my_sale_orders_filter"/>
+                <separator/>
+                <filter string="All orders" domain="[('type_sale', '=', 'order')]" name="all_sale_orders_filter"/>
+                <separator/>
+                <filter string="To Delivered" domain="[('state', '=', 'to_delivered')]" name="orders_to_delivered_filter"/>
+                <filter string="Delivered" domain="[('state', '=', 'delivered')]" name="orders_delivered_filter"/>
+                <separator/>
+                <filter invisible="1" string="Late Activities" name="activities_overdue"
+                    domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today"/>
+                <filter invisible="1" string="Today Activities" name="activities_today"
+                    domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                    domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Salesperson" name="salesperson" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Order Date" name="order_month" domain="[]" context="{'group_by': 'date_order'}"/>
+                    <filter string="State" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Type of Sale" name="type_sale" domain="[]" context="{'group_by': 'type_sale'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="orbit_sale_order">
+        <field name="name">Commandes</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,kanban,form,graph,pivot,calendar,activity</field>
+        <field name="search_view_id" ref="orbit.view_sales_order_filter_orbit"/>
+        <field name="context">{'default_type_sale':'order',}</field>
+        <field name="domain">[('type_sale','=','order')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer des Commandes
+            </p>
+            <p>
+                Créer et gérer des Commandes ici.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="orbit_purchase_order_action" model="ir.actions.act_window">
+        <field name="name">Achat</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">form,tree,graph</field>
+    </record>
+
+    <record id="orbit_purchase_order_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.orbit.form.inherit.sale</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            
+             <!-- Restriction du bouton de confirmation -->
+            <xpath expr="//button[@name='button_confirm']" position="attributes">
+                <attribute name="groups">orbit.purchase_ccbmshop_group_user</attribute>
+                <attribute name="class">oe_highlight</attribute>
+            </xpath>
+
+            <!-- Section des documents joints -->
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <field name="attachment_ids" widget="many2many_binary" 
+                           class="oe_inline"
+                           string="Pièces jointes"
+                           nolabel="1"
+                           options="{'preview_images': true, 'editable': true}"/>
+                </div>
+            </xpath>
+
+            <!-- <xpath expr="//sheet/group" position="after">
+                <group string="Documents joins">
+                    <group >
+                        <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" colspan="2"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+            </xpath> -->
+            
+        </field>
+    </record>
+
+</odoo>

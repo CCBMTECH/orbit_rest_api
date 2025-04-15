@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Inherit the account.move list view to add the amount_payed field -->
+        <record id="view_account_move_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.tree.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_invoice_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_total_signed']" position="after">
+                    <field name="invoice_origin" optional="show" string="Source Document"/>
+                    <field name="amount_untaxed_signed" string="Tax Excluded" sum="Total" optional="hide"/>
+                    <field name="amount_total_in_currency_signed" string="Total in Currency" groups="base.group_multi_currency"  optional="show"/>
+                    <field name="amount_payed" groups="base.group_multi_currency" sum="Total Paid Amount" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

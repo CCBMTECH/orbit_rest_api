@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ************************************** View Form  ************************************ -->
+        <record id="view_orbit_preorder_form" model="ir.ui.view">
+            <field name="name">creditorder.orbit.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <!-- ######################################### Header ######################################### -->
+                <xpath expr="//button[@name='%(sale.action_view_sale_advance_payment_inv)d'][2]" position="attributes">
+                    <!-- <attribute name="string">Down Payment Invoice</attribute> -->
+                    <attribute name="string">Facturer</attribute>
+                    <attribute name="context">{'default_advance_payment_method': 'delivered'}</attribute>
+                    <attribute name="attrs">{'invisible': ['|', ('type_sale', 'not in', ['preorder', 'creditorder']), ('state', 'not in', ['sale', 'to_delivered'])]}</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_draft']" position="after">
+                    <button
+                            name="%(orbit.action_wzd_orbit_preorder)d"
+                            string="Payer une avance"
+                            type="action" groups="account.group_account_invoice"
+                            attrs="{'invisible': ['|', ('state', '=', 'cancel'), '|', ('type_sale', 'not in', ['preorder', 'creditorder']), ('amount_residual', '&lt;=', 0)]}"
+                    />
+                </xpath>
+
+                <!-- ######################################### Sheet ######################################### -->
+                <xpath expr="//field[@name='validity_date']" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('type_sale', 'in', ['preorder', 'creditorder'])]}</attribute>
+                </xpath>
+
+                <!-- <xpath expr="//sheet/div[@class='oe_button_box']" position="inside"> -->
+                <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="inside">
+                    <button name="action_view_payments"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-money"
+                        attrs="{'invisible': [('payment_count', '=', 0)]}">
+                        <field name="payment_count" widget="statinfo" string="Payments"/>
+                    </button>
+                </xpath>
+                <field name="validity_date" position="before">
+                    <field name="commitment_date"
+                           decoration-success="type_sale == 'preorder'"
+                           decoration-muted="type_sale == 'creditorder'"
+                           attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}"
+                    />
+                </field>
+
+
+                <!-- ############## Sheet > Notebook ############## -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Payment advances"
+                          groups="account.group_account_invoice"
+                          attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
+                        <field
+                                name="account_payment_ids"
+                                nolabel="1"
+                                colspan="4"
+                                context="{'form_view_ref': 'account.view_account_payment_form', 'tree_view_ref': 'account.view_account_payment_tree'}"
+                        />
+                    </page>
+                    <page string="Invoices Order"
+                          groups="account.group_account_invoice"
+                          attrs="{'invisible': [('type_sale', 'not in', ['order', 'preorder', 'creditorder'])]}">
+                        <field
+                                name="invoices"
+                                nolabel="1"
+                                colspan="4"
+                                context="{'form_view_ref': 'account.view_move_form', 'tree_view_ref': 'account.view_out_invoice_tree'}"
+                        />
+                    </page>
+                    <page string="Dashboard"
+                          attrs="{'invisible': [('type_sale', 'not in', ['preorder', 'creditorder'])]}">
+                        <group string="Dates and Amounts">
+                            <group>
+                                <field name="first_payment_date" string="1st due date"/>
+                                <field name="second_payment_date" string="2nd due date"/>
+                                <field name="third_payment_date" string="3rd due date"/>
+                            </group>
+                            <group>
+                                <field name="first_payment_amount" string="1er amount" readonly="1"/>
+                                <field name="second_payment_amount" string="2nd amount" readonly="1"/>
+                                <field name="third_payment_amount" string="3rd amount" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Payment follow-up">
+                            <group >
+                                <field name="amount_total" />
+                                <field name="amount_residual" />
+                                <field name="amount_payed" />
+                            </group>
+                            <group >
+                                <field name="advance_payment_status"/>
+                                    <field name="first_payment_state" widget="boolean_toggle"/>
+                                    <field name="second_payment_state" widget="boolean_toggle"/>
+                                    <field name="third_payment_state" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+                <!-- ############## In page order_lines ############## -->
+                <xpath expr="//field[@name='tax_totals']" position="after">
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                        <label for="amount_residual"/>
+                    </div>
+                    <field
+                            name="amount_residual"
+                            nolabel="1"
+                            class="oe_subtotal_footer_separator"
+                            widget="monetary"
+                            options="{'currency_field': 'currency_id'}"
+                    />
+                </xpath>
+
+                <!-- ############## In page other_information ############## -->
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="advance_payment_status" invisible="1"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- ************************************ View Tree ************************************ -->
+        <record id="view_preorder_orbit_tree" model="ir.ui.view">
+            <field name="name">preorder.orbit.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="date_order" position="before">
+                    <field name="type_sale" optional="hide" widget="badge"/>
+                    <field name="third_payment_amount" invisible="1"/>
+                </field>
+                <field name="user_id" position="before">
+                    <field name="state" optional="show" widget="badge"/>
+                </field>
+                <field name='amount_total' position="after">
+                    <field name="amount_payed" widget="monetary" optional="hide" sum="Total no payed"/>
+                    <field name="amount_residual"
+                           attrs="{'invisible': [('type_sale', '==', 'order')]}"
+                           decoration-danger="amount_residual &gt; third_payment_amount"
+                           widget="monetary"
+                           sum="Total amount residual"
+                    />
+                </field>
+                <field name='invoice_status' position="before">
+                    <field name="advance_payment_status"
+                           attrs="{'invisible': [('type_sale', '==', 'order')]}"
+                           decoration-success="advance_payment_status == 'paid'"
+                           decoration-info="advance_payment_status == 'partial'"
+                           decoration-warning="advance_payment_status == 'not_paid'"
+                           widget="badge"
+                    />
+                </field>
+            </field>
+        </record>
+
+        <!-- ************************************ Menu Preorder  ************************************ -->
+
+        <!--<record id="orbit_sale_preorder" model="ir.actions.server">
+            <field name="name">Preorder</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = {
+                    'type': 'ir.actions.act_window',
+                    'res_model': 'sale.order',
+                    'view_mode': 'tree,form',
+                    'context': {'default_type_sale': 'preorder'}
+                }
+            </field>
+        </record>-->
+
+
+        <!-- ************************************ View Search ************************************ -->
+        <record id="view_sales_preorder_filter_orbit" model="ir.ui.view">
+            <field name="name">sale.order.list.preorder</field>
+            <field name="model">sale.order</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                    <field name="name" string="Preorder"
+                        filter_domain="['|', '|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self), ('partner_id', 'child_of', self)]"/>
+                    <field name="partner_id" operator="child_of"/>
+                    <field name="user_id"/>
+                    <field name="team_id" string="Sales Team"/>
+                    <field name="order_line" string="Product" filter_domain="[('order_line.product_id', 'ilike', self)]"/>
+                    <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
+                    <field name="state" string="State" />
+                    <field name="type_sale" string="Type of Sale" />
+                    <!-- We only allow to search on the following sale order line fields (product, name) because the other fields, such as price, quantity, ...
+                        will not be searched as often, and if they need to be searched it's usually in the context of products
+                        and then they can be searched from the page listing the sale order lines related to a product (from the product itself).
+                    -->
+
+                    <filter string="My Preorders" domain="[('user_id', '=', uid)]" name="my_sale_preorders_filter"/>
+                    <separator/>
+                    <filter string="All Preorders" domain="[('type_sale', '=', 'preorder')]" name="all_sale_preorders_filter"/>
+                    <separator/>
+                    <filter string="To Delivered" domain="[('state', '=', 'to_delivered')]" name="preorders_to_delivered_filter"/>
+                    <filter string="Delivered" domain="[('state', '=', 'delivered')]" name="preorders_delivered_filter"/>
+                    <separator/>
+                    <filter invisible="1" string="Late Activities" name="activities_overdue"
+                        domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                        help="Show all records which has next action date is before today"/>
+                    <filter invisible="1" string="Today Activities" name="activities_today"
+                        domain="[('my_activity_date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <filter invisible="1" string="Future Activities" name="activities_upcoming_all"
+                        domain="[('my_activity_date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Salesperson" name="salesperson" domain="[]" context="{'group_by': 'user_id'}"/>
+                        <filter name="customer" string="Customer" domain="[]" context="{'group_by': 'partner_id'}"/>
+                        <filter string="Order Date" name="order_month" domain="[]" context="{'group_by': 'date_order'}"/>
+                        <filter string="State" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Type of Sale" name="type_sale" domain="[]" context="{'group_by': 'type_sale'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="orbit_preorder" model="ir.actions.act_window">
+            <field name="name">Precommandes</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form,kanban,graph,activity</field>
+            <field name="search_view_id" ref="orbit.view_sales_preorder_filter_orbit"/>
+            <field name="context">{'default_type_sale':'preorder',}</field>
+            <field name="domain">[('type_sale','=','preorder')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Créer des Précommandes
+                </p>
+                <p>
+                    Les préventes sont des ventes sous commande
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

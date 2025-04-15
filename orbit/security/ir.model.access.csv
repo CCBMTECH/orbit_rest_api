@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_affiliate,orbit.affiliate,model_orbit_affiliate,base.group_user,1,1,1,1
+access_crm_type_sale,orbit.crm.type.sale,model_crm_type_sale,base.group_user,1,1,1,1
+

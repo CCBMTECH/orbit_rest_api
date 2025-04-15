@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Form view invoice inherited -->
+    <record id="view_stock_picking_orbit_inherited" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+            <button name="action_confirm" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="action_assign" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="button_validate" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="action_set_quantities_to_reservation" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="action_clear_quantities_to_zero" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="do_print_picking" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+
+            <button name="do_unreserve" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="button_scrap" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            <button name="action_toggle_is_locked" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+
+            <button name="action_cancel" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </button>
+            
+            <xpath expr="//button[@name='%(stock.action_report_delivery)d']" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </xpath>
+            <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
+                <attribute name="groups">orbit.stock_ccbmshop_group_user</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
