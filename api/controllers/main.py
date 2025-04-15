@@ -738,28 +738,27 @@ else:
         from . import cors_assist
         from . import resources
         from . import default_universal_controller
-        from . import precommande_controller
-        from . import commande_controller
-        from . import user_controller
-        from . import facture_controller
-        from . import payment_controller
-        from . import journal_currency_controller
-        from . import mailer_controller
-        from . import reset_password_controller
-        from . import contact_controller
-        from . import product_categorie_controller
-        from . import excel_update_controller
-        from . import module_dev_controller
-        from . import entreprise_controller
-        from . import creditcommande_controller
-        # from . import scriping
-        from . import commentaire_controller
-        from . import pack_product_controller
-        from . import partner_controller
-        from . import terme_recherche_controller
+        
+        # from . import precommande_controller
+        # from . import commande_controller
+        # from . import user_controller
+        # from . import facture_controller
+        # from . import payment_controller
+        # from . import journal_currency_controller
+        # from . import mailer_controller
+        # from . import reset_password_controller
+        # from . import contact_controller
+        # from . import product_categorie_controller
+        # from . import excel_update_controller
+        # from . import module_dev_controller
+        # from . import entreprise_controller
+        # from . import creditcommande_controller
+        
+        # from . import commentaire_controller
+        # from . import pack_product_controller
+        # from . import partner_controller
+        # from . import terme_recherche_controller
 
-        from . import gestionnaire_controller
-        # from . import service_controller
-        # from . import abonnement_controller
-
+        # from . import gestionnaire_controller
+        
 
