@@ -5,8 +5,8 @@ from . import ir_model
 from . import rest_api_tokens
 
 # Partner and Company
-from . import partner
-from . import company
+# from . import partner
+# from . import company
 
 # Products
 # from . import product_template
