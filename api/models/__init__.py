@@ -9,18 +9,18 @@ from . import partner
 from . import company
 
 # Products
-from . import product_template
-from . import pack_product
+# from . import product_template
+# from . import pack_product
 
-# Sales and Orders
-from . import sale
-from . import sale_order_mail
-from . import sale_credit_order_mail
+# # Sales and Orders
+# from . import sale
+# from . import sale_order_mail
+# from . import sale_credit_order_mail
 
-# Payments
-from . import payment_details
-from . import account_payment_preorder
+# # Payments
+# from . import payment_details
+# from . import account_payment_preorder
 
-# CRM and Communication
-from . import crm_model
-from . import commentaire
+# # CRM and Communication
+# from . import crm_model
+# from . import commentaire
