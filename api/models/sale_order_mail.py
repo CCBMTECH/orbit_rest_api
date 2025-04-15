@@ -10,12 +10,7 @@ _logger = logging.getLogger(__name__)
 class SaleOrderMail(models.Model):
     _inherit = 'sale.order'
 
-    type_sale = fields.Selection([
-        ('order', 'Order'),
-        ('preorder', 'Pre-Order')
-        ('crediteorder', 'Credit-Order')
-    ], string='Type de vente', default='order')
-
+   
     
     def send_order_confirmation_mail(self):
         # Récupérer ou créer une instance de IrMailServer
