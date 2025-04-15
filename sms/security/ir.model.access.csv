@@ -6,4 +6,4 @@ access_sms_model,sms.model,model_sms_model,base.group_user,1,1,1,0
 access_test_orange_sms,test.orange.sms,model_test_orange_sms,base.group_user,1,1,1,0
 access_sale_order_message,access_sale_order_message,model_sale_order_message,base.group_user,1,1,1,0
 
-access_sms_history,sms.history,model_sms_history,,1,1,1,1
+

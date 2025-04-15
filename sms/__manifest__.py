@@ -5,7 +5,7 @@
     'category': 'CCBM/',
     'summary': 'Envoyer des SMS avec l\'API Orange Sonatel',
     'description': 'Ce module vous permet d\'envoyer des messages SMS depuis Odoo en utilisant l\'API Orange Sonatel.',
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale', 'sms'],
     'data': [
         'security/ir.model.access.csv',
         # 'views/sms_config_view.xml',
