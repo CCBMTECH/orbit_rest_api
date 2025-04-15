@@ -19,17 +19,6 @@ class SaleOrderCronCreditMailReminder(models.Model):
         reminder_start_date = today
         reminder_end_date = today + timedelta(days=7)
 
-
-
-        # overdue_orders = self.search([
-        #     ('type_sale', '=', 'creditorder'),
-        #     ('state', '!=', 'cancel'),
-        #     '|', '|', '|', '|',
-        #     '&', ('first_payment_date', '>=', reminder_end), ('first_payment_date', '<', today), ('first_payment_state', '=', False),
-        #     '&', ('second_payment_date', '>=', reminder_end), ('second_payment_date', '<', today), ('second_payment_state', '=', False),
-        #     '&', ('third_payment_date', '>=', reminder_end), ('third_payment_date', '<', today), ('third_payment_state', '=', False),
-        #     '&', ('fourth_payment_date', '>=', reminder_end), ('fourth_payment_date', '<', today), ('fourth_payment_state', '=', False),
-        # ])
         overdue_orders = self.search([
             ('type_sale', '=', 'creditorder'),
             ('state', '!=', 'cancel'),

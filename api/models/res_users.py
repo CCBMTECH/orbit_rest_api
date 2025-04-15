@@ -13,8 +13,23 @@ class ResUsers(models.Model):
             mail_mail = self.env['mail.mail'].sudo().create(email_values[user.id])
             mail_mail.send()
 
-    @api.model
-    def create(self, vals):
-        user = super(ResUsers, self).create(vals)
-        user.send_welcome_email()
-        return user
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        """
+        Override create method to ensure each user has a partner_id
+        """
+        for vals in vals_list:
+            # Si partner_id n'est pas fourni, créer un partenaire
+            if not vals.get('partner_id'):
+                # Préparer les données du partenaire
+                partner_vals = {
+                    'name': vals.get('name', vals.get('login', 'New User')),
+                    'email': vals.get('email', vals.get('login')),
+                    'company_id': vals.get('company_id', self.env.company.id),
+                }
+                # Créer le partenaire
+                partner = self.env['res.partner'].sudo().create(partner_vals)
+                vals['partner_id'] = partner.id
+        
+        return super(ResUsers, self).create(vals_list)
