@@ -26,6 +26,7 @@
         'account',
         'product',
         'crm',
+        'orbit'
     ],
     'data': [
         'security/ir.model.access.csv',
