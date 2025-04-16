@@ -1,0 +1,107 @@
+<!-- 
+
+<odoo>
+    <record id="view_sms_history_form" model="ir.ui.view">
+        <field name="name">sms.history.form</field>
+        <field name="model">sms.history</field>
+        <field name="arch" type="xml">
+            <form string="SMS History">
+                <header>
+                    <button name="unlink" string="Supprimer" type="object" class="btn-danger" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="recipient" />
+                        <field name="message" />
+                        <field name="status" />
+                        <field name="send_date" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sms_history_tree" model="ir.ui.view">
+        <field name="name">sms.history.tree</field>
+        <field name="model">sms.history</field>
+        <field name="arch" type="xml">
+            <tree string="SMS History">
+                <field name="recipient" />
+                <field name="message" />
+                <field name="status" />
+                <field name="send_date" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sms_history" model="ir.actions.act_window">
+        <field name="name">SMS History</field>
+        <field name="res_model">sms.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo> -->
+
+<odoo>
+    <record id="view_sms_history_form" model="ir.ui.view">
+        <field name="name">sms.history.form</field>
+        <field name="model">sms.history</field>
+        <field name="arch" type="xml">
+            <form string="SMS History">
+                <header>
+                    <button name="unlink" string="Supprimer" type="object" class="btn-danger" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="recipient" />
+                        <field name="message" />
+                        <field name="status" />
+                        <field name="send_date" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sms_history_tree" model="ir.ui.view">
+        <field name="name">sms.history.tree</field>
+        <field name="model">sms.history</field>
+        <field name="arch" type="xml">
+            <tree string="SMS History">
+                <field name="recipient" />
+                <field name="message" />
+                <field name="status" />
+                <field name="send_date" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_sms_history" model="ir.actions.act_window">
+        <field name="name">SMS History</field>
+        <field name="res_model">sms.history</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_sms_history_delete" model="ir.actions.server">
+        <field name="name">Delete SMS History</field>
+        <field name="model_id" ref="model_sms_history" />
+        <field name="binding_model_id" ref="model_sms_history" />
+        <field name="state">code</field>
+        <field name="code">
+            action = env['sms.history'].browse(env.context.get('active_ids')).unlink()
+        </field>
+    </record>
+
+    <record id="view_sms_history_tree_delete_button" model="ir.ui.view">
+        <field name="name">sms.history.tree.delete.button</field>
+        <field name="model">sms.history</field>
+        <field name="inherit_id" ref="view_sms_history_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="%(action_sms_history_delete)d" string="Supprimer" type="action"
+                        class="btn-danger" />
+                </header>
+            </xpath>
+        </field>
+    </record>
+</odoo>
