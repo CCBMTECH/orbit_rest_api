@@ -5,11 +5,12 @@ from . import ir_model
 from . import rest_api_tokens
 
 # Partner and Company
-# from . import partner
-# from . import company
+from . import partner
+from . import company
 
 # Products
-# from . import product_template
+from . import commentaire
+from . import product_template
 # from . import pack_product
 
 # # Sales and Orders
@@ -22,5 +23,5 @@ from . import rest_api_tokens
 # from . import account_payment_preorder
 
 # # CRM and Communication
-# from . import crm_model
-# from . import commentaire
+from . import crm_model
+
