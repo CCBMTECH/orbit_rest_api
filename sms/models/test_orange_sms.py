@@ -17,7 +17,7 @@ class TestOrangeSMS(models.Model):
         return {
             'name': 'SMS History',
             'type': 'ir.actions.act_window',
-            'res_model': 'sms.history',
+            'res_model': 'orange.sms.history',
             'view_mode': 'tree,form',
             'domain': [('recipient', '=', self.recipient)],
         }

@@ -26,7 +26,7 @@ class SaleOrder(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Envoyer SMS',
-            'res_model': 'send.sms',
+            'res_model': 'orange.send.sms',
             'view_mode': 'form',
             'target': 'new',
             'context': {
@@ -34,3 +34,4 @@ class SaleOrder(models.Model):
                 'default_message': message,
             }
         }
+       
