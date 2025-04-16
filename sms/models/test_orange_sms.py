@@ -8,7 +8,7 @@ class TestOrangeSMS(models.Model):
     message = fields.Text('Message', required=True)
 
     def send_sms(self):
-        self.env['send.sms'].create({
+        self.env['orange.send.sms'].create({
             'recipient': self.recipient,
             'message': self.message,
         }).send_sms()

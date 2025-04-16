@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 class SmsHistory(models.Model):
-    _name = 'sms.history'
+    _name = 'orange.sms.history'
     _description = 'SMS History'
 
     recipient = fields.Char('Recipient')

@@ -10,7 +10,7 @@ import urllib.parse
 _logger = logging.getLogger(__name__)
 
 class SendSms(models.Model):
-    _name = 'send.sms'
+    _name = 'orange.send.sms'
     _description = 'Send SMS'
 
     recipient = fields.Char('Recipient', required=True)
@@ -27,7 +27,7 @@ class SendSms(models.Model):
 
     def send_sms(self):
          
-        config = self.env['sms.config'].get_default_config()
+        config = self.env['orange.sms.config'].get_default_config()
 
         if not config:
             raise UserError(_("Please configure the SMS configuration."))
@@ -92,7 +92,7 @@ class SendSms(models.Model):
                 self.message = f"Error sending SMS: {response.text}"
                 _logger.error(f"SMS sending failed. Status: {response_dict.get('STATUS_CODE')}, Message: {response_dict.get('STATUS_TEXT')}")
 
-            self.env['sms.history'].create({
+            self.env['orange.sms.history'].create({
                 'recipient': self.recipient,
                 'message': self.message,
                 'status': self.status,
@@ -102,7 +102,7 @@ class SendSms(models.Model):
 
             self.status = 'failed'
             error_message = _("Error sending SMS: {}").format(str(e))
-            self.env['sms.history'].sudo().create({
+            self.env['orange.sms.history'].sudo().create({
                 'recipient': self.recipient,
                 'message': self.message,
                 'status': 'failed',
