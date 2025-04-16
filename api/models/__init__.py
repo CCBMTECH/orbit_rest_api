@@ -20,7 +20,7 @@ from . import crm_model
 
 # # Sales and Orders
 from . import sale
-# from . import sale_order_mail
+from . import sale_order_mail
 from . import sale_credit_order_mail
 
 # # Payments
