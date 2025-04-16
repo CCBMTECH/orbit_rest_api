@@ -34,13 +34,13 @@
         'data/ir_configparameter_data.xml',
         'data/ir_cron_data.xml',
         
-        # 'views/ir_model_view.xml',
+        'views/ir_model_view.xml',
         # 'views/product_template_view.xml',
         # 'views/res_partner_view.xml',
         
         # 'views/ir_cron_data.xml',
         # 'views/crm_lead_view.xml',
-        # 'views/pack_views.xml',
+        'views/pack_views.xml',
     ],
     'images': [
         'static/description/banner.png',
