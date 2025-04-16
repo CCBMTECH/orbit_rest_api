@@ -10,7 +10,7 @@ class SaleCreditOrderMail(models.Model):
 
     @api.model
     def send_credit_order_validation_mail(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -39,7 +39,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('validation')
 
     def send_credit_order_rejection_mail(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -52,7 +52,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('rejection')
 
     def send_credit_order_rh_rejected(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -65,7 +65,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('rh_rejection')
 
     def send_credit_order_admin_rejected(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -78,7 +78,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('admin_rejection')
 
     def send_credit_order_admin_validation(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -91,7 +91,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('admin_validation')
 
     def send_credit_order_rh_validation(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         partner = self.partner_id
         if not partner:
             return {'status': 'error', 'message': 'Partner not found for the given order'}
@@ -103,7 +103,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('rh_validation')
 
     def send_credit_order_request_mail(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -280,7 +280,7 @@ class SaleCreditOrderMail(models.Model):
         """
 
     def send_credit_order_creation_notification_to_client(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         if not mail_server:
             return {'status': 'error', 'message': 'Mail server not configured'}
 
@@ -368,7 +368,7 @@ class SaleCreditOrderMail(models.Model):
         self.send_sms_notification('creation')
 
     def send_credit_order_creation_notification_to_hr(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         if not mail_server:
             return {'status': 'error', 'message': 'Mail server not configured'}
 

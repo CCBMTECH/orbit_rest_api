@@ -14,7 +14,7 @@ class SaleOrderMail(models.Model):
     
     def send_order_confirmation_mail(self):
         # Récupérer ou créer une instance de IrMailServer
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         # Récupérer le partenaire associé à la commande
         partner = self.partner_id
@@ -168,7 +168,7 @@ class SaleOrderMail(models.Model):
         }
 
         # Envoi de l'e-mail
-        mail_mail = request.env['mail.mail'].sudo().create(email_values)
+        mail_mail = self.env['mail.mail'].sudo().create(email_values)
         try:
             mail_mail.send()
             return {'status': 'success', 'message': 'Mail envoyé avec succès'}
@@ -179,7 +179,7 @@ class SaleOrderMail(models.Model):
 
     def send_preorder_confirmation_mail(self):
     # Récupérer ou créer une instance de IrMailServer
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
 
         # Récupérer le partenaire associé à la commande
         partner = self.partner_id
@@ -369,7 +369,7 @@ class SaleOrderMail(models.Model):
         }
 
         # Construire le message e-mail
-        mail_mail = request.env['mail.mail'].sudo().create(email_values)
+        mail_mail = self.env['mail.mail'].sudo().create(email_values)
         try:
             mail_mail.send()
             return {'status': 'success', 'message': 'Mail envoyé avec succès'}
@@ -379,7 +379,7 @@ class SaleOrderMail(models.Model):
      
 
     def send_credit_order_confirmation_mail(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
@@ -578,7 +578,7 @@ class SaleOrderMail(models.Model):
     # mail apres payment precommande
     def send_payment_status_mail(self):
         # Récupérer ou créer une instance de IrMailServer
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
 
         # Récupérer le partenaire associé à la commande
         partner = self.partner_id
@@ -778,7 +778,7 @@ class SaleOrderMail(models.Model):
             'state': 'outgoing',
         }
         # Construire le message e-mail
-        mail_mail = request.env['mail.mail'].sudo().create(email_values)
+        mail_mail = self.env['mail.mail'].sudo().create(email_values)
         try:
             mail_mail.send()
             return {'status': 'success', 'message': 'Mail envoyé avec succès'}
@@ -788,14 +788,14 @@ class SaleOrderMail(models.Model):
 
 
     def send_credit_order_to_rh_for_confirmation(self):
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
         
         partner = self.partner_id
         if not partner:
             return {'status': 'error', 'message': 'Partner not found for the given order'}
         # Send email to HR
         parent = self.partner_id.parent_id
-        rh_user = request.env['res.partner'].sudo().search([('role', '=', 'main_user'), ('parent_id', '=', parent.id)], limit=1)
+        rh_user = self.env['res.partner'].sudo().search([('role', '=', 'main_user'), ('parent_id', '=', parent.id)], limit=1)
         
         if rh_user:
             hr_subject = f'Nouvelle commande à crédit à valider - {self.name}'
@@ -817,7 +817,7 @@ class SaleOrderMail(models.Model):
     # mail apres payment creditorder
     def send_payment_status_mail_creditorder(self):
         # Récupérer ou créer une instance de IrMailServer
-        mail_server = request.env['ir.mail_server'].sudo().search([], limit=1)
+        mail_server = self.env['ir.mail_server'].sudo().search([], limit=1)
 
         # Récupérer le partenaire associé à la commande
         partner = self.partner_id
@@ -1028,7 +1028,7 @@ class SaleOrderMail(models.Model):
             'state': 'outgoing',
         }
         # Construire le message e-mail
-        mail_mail = request.env['mail.mail'].sudo().create(email_values)
+        mail_mail = self.env['mail.mail'].sudo().create(email_values)
         try:
             mail_mail.send()
             return {'status': 'success', 'message': 'Mail envoyé avec succès'}

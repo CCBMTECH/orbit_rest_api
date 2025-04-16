@@ -25,4 +25,5 @@ from . import sale_credit_order_mail
 
 # # Payments
 from . import payment_details
+from . import account_payment   
 # from . import account_payment_preorder
