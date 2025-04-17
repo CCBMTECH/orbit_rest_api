@@ -31,7 +31,7 @@
     'data': [
         'security/ir.model.access.csv',
 
-        'data/ir_configparameter_data.xml',
+        # 'data/ir_configparameter_data.xml',
         
         # 'data/ir_cron_data.xml',
         
