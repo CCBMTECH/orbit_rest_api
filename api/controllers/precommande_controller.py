@@ -97,128 +97,128 @@ class PreCommandeREST(http.Controller):
             response=json.dumps("user_id est obligatoire")
         )
 
-    @http.route('/api/precommandes/details', methods=['POST'], type='http', auth='none', cors="*" , csrf=False)
-    def api_preorders__GET_ONE(self,  **kw):
-        data = json.loads(request.httprequest.data)
-        partner_id = int( data.get('partner_id'))
-        precommande_id = int (data.get('precommande_id'))
-        order = request.env['sale.order'].sudo().search([('id','=', precommande_id) , ('type_sale' , '=' , 'preorder' ) , ( 'partner_id', '=', partner_id )])
+    # @http.route('/api/precommandes/details', methods=['POST'], type='http', auth='none', cors="*" , csrf=False)
+    # def api_preorders__GET_ONE(self,  **kw):
+    #     data = json.loads(request.httprequest.data)
+    #     partner_id = int( data.get('partner_id'))
+    #     precommande_id = int (data.get('precommande_id'))
+    #     order = request.env['sale.order'].sudo().search([('id','=', precommande_id) , ('type_sale' , '=' , 'preorder' ) , ( 'partner_id', '=', partner_id )])
 
-        payment = request.env['account.payment'].sudo().search([ ( 'sale_id', '=' , order.id ) ])
-        # invoice = request.env['account.move'].sudo().search([ ( 'id', '=' , payment.move_id ) ])
+    #     payment = request.env['account.payment'].sudo().search([ ( 'sale_id', '=' , order.id ) ])
+    #     # invoice = request.env['account.move'].sudo().search([ ( 'id', '=' , payment.move_id ) ])
        
-        if not order:
-            return werkzeug.wrappers.Response(
-                status=404,
-                content_type='application/json; charset=utf-8',
-                headers=[('Cache-Control', 'no-store'), ('Pragma', 'no-cache')],
-                response=json.dumps("Précommande introuvable")
-            )
+    #     if not order:
+    #         return werkzeug.wrappers.Response(
+    #             status=404,
+    #             content_type='application/json; charset=utf-8',
+    #             headers=[('Cache-Control', 'no-store'), ('Pragma', 'no-cache')],
+    #             response=json.dumps("Précommande introuvable")
+    #         )
 
-        invoice_p = []
-        if len (payment) > 0:
-            for pp in payment:
-                inv = request.env['account.move'].sudo().search([ ( 'id', '=' , pp.move_id.id ) ])
-                invoice_p.append( inv )
-        if order:
-            order_data = {
-                'id': order.id,
-                'type_sale':  order.type_sale,
-                'date_order': order.date_order.isoformat() if order.date_order else None,
-                'name': order.name,
-                'partner_id': order.partner_id.id or None,
-                'partner_name': order.partner_id.name or None,
-                'partner_street': order.partner_id.street or None,
-                'partner_street2': order.partner_id.street2 or None,
-                'partner_city': order.partner_id.city or None,
-                'partner_state_id': order.partner_id.state_id.id or None,
-                'partner_state_name': order.partner_id.state_id.name or None,
-                'partner_zip': order.partner_id.zip or None,
-                'partner_country_id': order.partner_id.country_id.id or None,
-                'partner_country_name': order.partner_id.country_id.name or None,
-                'partner_vat': order.partner_id.vat or None,
-                'partner_email': order.partner_id.email or None,
-                'partner_phone': order.partner_id.phone or None,
-                'amount_untaxed': order.amount_untaxed or None,
-                'amount_tax': order.amount_tax or None,
-                'amount_total': order.amount_total or None,
-                'company_id': order.company_id.id,
-                'commitment_date': order.commitment_date.isoformat(),
-                'state': order.state,
-                'first_payment_date': order.first_payment_date.isoformat() if order.first_payment_date else None,
-                'second_payment_date': order.second_payment_date.isoformat() if order.second_payment_date else None,
-                'third_payment_date': order.third_payment_date.isoformat() if order.third_payment_date else None,
+    #     invoice_p = []
+    #     if len (payment) > 0:
+    #         for pp in payment:
+    #             inv = request.env['account.move'].sudo().search([ ( 'id', '=' , pp.move_id.id ) ])
+    #             invoice_p.append( inv )
+    #     if order:
+    #         order_data = {
+    #             'id': order.id,
+    #             'type_sale':  order.type_sale,
+    #             'date_order': order.date_order.isoformat() if order.date_order else None,
+    #             'name': order.name,
+    #             'partner_id': order.partner_id.id or None,
+    #             'partner_name': order.partner_id.name or None,
+    #             'partner_street': order.partner_id.street or None,
+    #             'partner_street2': order.partner_id.street2 or None,
+    #             'partner_city': order.partner_id.city or None,
+    #             'partner_state_id': order.partner_id.state_id.id or None,
+    #             'partner_state_name': order.partner_id.state_id.name or None,
+    #             'partner_zip': order.partner_id.zip or None,
+    #             'partner_country_id': order.partner_id.country_id.id or None,
+    #             'partner_country_name': order.partner_id.country_id.name or None,
+    #             'partner_vat': order.partner_id.vat or None,
+    #             'partner_email': order.partner_id.email or None,
+    #             'partner_phone': order.partner_id.phone or None,
+    #             'amount_untaxed': order.amount_untaxed or None,
+    #             'amount_tax': order.amount_tax or None,
+    #             'amount_total': order.amount_total or None,
+    #             'company_id': order.company_id.id,
+    #             'commitment_date': order.commitment_date.isoformat(),
+    #             'state': order.state,
+    #             'first_payment_date': order.first_payment_date.isoformat() if order.first_payment_date else None,
+    #             'second_payment_date': order.second_payment_date.isoformat() if order.second_payment_date else None,
+    #             'third_payment_date': order.third_payment_date.isoformat() if order.third_payment_date else None,
 
-                'first_payment_amount': order.first_payment_amount,
-                'second_payment_amount': order.second_payment_amount,
-                'third_payment_amount': order.third_payment_amount,
+    #             'first_payment_amount': order.first_payment_amount,
+    #             'second_payment_amount': order.second_payment_amount,
+    #             'third_payment_amount': order.third_payment_amount,
 
-                'first_payment_state': order.first_payment_state,
-                'second_payment_state': order.second_payment_state,
-                'third_payment_state': order.third_payment_state,
+    #             'first_payment_state': order.first_payment_state,
+    #             'second_payment_state': order.second_payment_state,
+    #             'third_payment_state': order.third_payment_state,
 
-                'amount_residual': order.amount_residual,
-                'advance_payment_status':order.advance_payment_status,
-                'user_id': order.user_id.id or None,
-                'user_name': order.user_id.name or None,
-                'create_date': order.create_date.isoformat() if order.create_date else None,
-                'payment': [
-                    {
-                        'payment_id' : p.id or None,
-                        'payment_type' : p.payment_type,
-                        'payment_amount' : p.amount,
-                        'is_reconciled': p.is_reconciled
-                    }  for p in payment
-                ],
-                'invoice' : [
-                    {
-                        'invoice_id' : i.id,
-                        'invoice_name': i.name,
-                        'invoice_state': i.state,
-                        'payment_state': i.payment_state,
-                        'invoice_payment_id': i.payment_id.id,
-                        'ref': i.ref
-                    } for i in invoice_p
-                ],
-                'order_lines': [
-                    {
-                        'id': l.id or None,
-                        'product_id': l.product_id.id or None,
-                        'product_name': l.product_id.name or None,
-                        'product_uom_qty': l.product_uom_qty or None,
-                        'product_uom': l.product_uom.id or None,
-                        'product_uom_name': l.product_uom.name or None,
-                        'image_1920': l.product_id.image_1920,
-                        'image_128' : l.product_id.image_128,
-                        'image_1024': l.product_id.image_1024,
-                        'image_512': l.product_id.image_512,
-                        'image_256': l.product_id.image_256,
-                        'categ_id': l.product_id.categ_id.name,
-                        'price_unit': l.price_unit or None,
-                        'price_subtotal': l.price_subtotal or None,
-                        'price_tax': l.price_tax or None,
-                        'price_total': l.price_total or None,
-                        'qty_delivered': l.qty_delivered or None,
-                        'qty_to_invoice': l.qty_to_invoice or None,
-                        'qty_invoiced': l.qty_invoiced or None,
-                        'is_downpayment': l.is_downpayment or None,
-                    } for l in order.order_line if not l.is_downpayment
-                ]
-            }
+    #             'amount_residual': order.amount_residual,
+    #             'advance_payment_status':order.advance_payment_status,
+    #             'user_id': order.user_id.id or None,
+    #             'user_name': order.user_id.name or None,
+    #             'create_date': order.create_date.isoformat() if order.create_date else None,
+    #             'payment': [
+    #                 {
+    #                     'payment_id' : p.id or None,
+    #                     'payment_type' : p.payment_type,
+    #                     'payment_amount' : p.amount,
+    #                     'is_reconciled': p.is_reconciled
+    #                 }  for p in payment
+    #             ],
+    #             'invoice' : [
+    #                 {
+    #                     'invoice_id' : i.id,
+    #                     'invoice_name': i.name,
+    #                     'invoice_state': i.state,
+    #                     'payment_state': i.payment_state,
+    #                     'invoice_payment_id': i.payment_id.id,
+    #                     'ref': i.ref
+    #                 } for i in invoice_p
+    #             ],
+    #             'order_lines': [
+    #                 {
+    #                     'id': l.id or None,
+    #                     'product_id': l.product_id.id or None,
+    #                     'product_name': l.product_id.name or None,
+    #                     'product_uom_qty': l.product_uom_qty or None,
+    #                     'product_uom': l.product_uom.id or None,
+    #                     'product_uom_name': l.product_uom.name or None,
+    #                     'image_1920': l.product_id.image_1920,
+    #                     'image_128' : l.product_id.image_128,
+    #                     'image_1024': l.product_id.image_1024,
+    #                     'image_512': l.product_id.image_512,
+    #                     'image_256': l.product_id.image_256,
+    #                     'categ_id': l.product_id.categ_id.name,
+    #                     'price_unit': l.price_unit or None,
+    #                     'price_subtotal': l.price_subtotal or None,
+    #                     'price_tax': l.price_tax or None,
+    #                     'price_total': l.price_total or None,
+    #                     'qty_delivered': l.qty_delivered or None,
+    #                     'qty_to_invoice': l.qty_to_invoice or None,
+    #                     'qty_invoiced': l.qty_invoiced or None,
+    #                     'is_downpayment': l.is_downpayment or None,
+    #                 } for l in order.order_line if not l.is_downpayment
+    #             ]
+    #         }
 
-            resp = werkzeug.wrappers.Response(
-                status=200,
-                content_type='application/json; charset=utf-8',
-                headers=[('Cache-Control', 'no-store'), ('Pragma', 'no-cache')],
-                response=json.dumps(order_data)
-            )
-            return resp
-        return  werkzeug.wrappers.Response(
-            status=404,
-            content_type='application/json; charset=utf-8',
-            headers=[('Cache-Control', 'no-store'), ('Pragma', 'no-cache')],
-            response=json.dumps("Commande non trouvée")
-        )
+    #         resp = werkzeug.wrappers.Response(
+    #             status=200,
+    #             content_type='application/json; charset=utf-8',
+    #             headers=[('Cache-Control', 'no-store'), ('Pragma', 'no-cache')],
+    #             response=json.dumps(order_data)
+    #         )
+    #         return resp
+    #     return  werkzeug.wrappers.Response(
+    #         status=404,
+    #         content_type='application/json; charset=utf-8',
+    #         headers=[('Cache-Control', 'no-store'), ('Pragma', 'no-cache')],
+    #         response=json.dumps("Commande non trouvée")
+    #     )
 
 
     # la fonction qu'on utilise
