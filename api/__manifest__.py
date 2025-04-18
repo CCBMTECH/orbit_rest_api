@@ -41,7 +41,7 @@
         'views/res_partner_view.xml',
         
         # 'views/ir_cron_data.xml',
-        # 'views/crm_lead_view.xml',
+        'views/crm_lead_view.xml',
 
     ],
     'images': [
