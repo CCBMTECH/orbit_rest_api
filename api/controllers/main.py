@@ -748,7 +748,7 @@ else:
         # from . import mailer_controller
         # from . import reset_password_controller
         # from . import contact_controller
-        # from . import product_categorie_controller
+        from . import product_categorie_controller
         # from . import excel_update_controller
         # from . import module_dev_controller
         # from . import entreprise_controller
