@@ -755,9 +755,9 @@ else:
         # from . import entreprise_controller
         # from . import creditcommande_controller
         
-        from . import commentaire_controller
+        # from . import commentaire_controller
         # from . import pack_product_controller
-        # from . import partner_controller
+        from . import partner_controller
         # from . import terme_recherche_controller
 
         # from . import gestionnaire_controller
