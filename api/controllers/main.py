@@ -739,7 +739,7 @@ else:
         from . import resources
         from . import default_universal_controller
         
-        # from . import precommande_controller
+        from . import precommande_controller
         # from . import commande_controller
         # from . import user_controller
         # from . import facture_controller
