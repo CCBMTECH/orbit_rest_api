@@ -745,13 +745,13 @@ else:
         # from . import facture_controller
         # from . import payment_controller
         # from . import journal_currency_controller
-        # from . import mailer_controller
+        from . import mailer_controller
         from . import reset_password_controller
         
         from . import contact_controller
         from . import product_categorie_controller
         # from . import excel_update_controller
-        # from . import module_dev_controller
+        from . import module_dev_controller
         # from . import entreprise_controller 
         # from . import creditcommande_controller
         
