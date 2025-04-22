@@ -760,7 +760,6 @@ else:
         # from . import pack_product_controller
         # from . import partner_controller  // probleme de warhouse
         # from . import terme_recherche_controller
-
         # from . import gestionnaire_controller
         
 
