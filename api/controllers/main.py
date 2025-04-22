@@ -741,7 +741,7 @@ else:
         
         from . import precommande_controller
         from . import commande_controller
-        # from . import user_controller
+        from . import user_controller
         # from . import facture_controller
         # from . import payment_controller
         # from . import journal_currency_controller
