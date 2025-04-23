@@ -8,7 +8,7 @@ class TestOrangeSMS(models.Model):
     message = fields.Text('Message', required=True)
 
     def send_sms(self):
-        self.env['send.sms'].create({
+        self.env['orange.send.sms'].create({
             'recipient': self.recipient,
             'message': self.message,
         }).send_sms()
@@ -17,7 +17,7 @@ class TestOrangeSMS(models.Model):
         return {
             'name': 'SMS History',
             'type': 'ir.actions.act_window',
-            'res_model': 'sms.history',
+            'res_model': 'orange.sms.history',
             'view_mode': 'tree,form',
             'domain': [('recipient', '=', self.recipient)],
         }

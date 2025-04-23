@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 class SmsModel(models.Model):
-    _name = 'sms.model'
+    _name = 'orange.sms.model'
     _description = 'SMS Model'
 
     code = fields.Char('Code', required=True)

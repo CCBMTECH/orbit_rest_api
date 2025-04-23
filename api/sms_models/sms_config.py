@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 class SmsConfig(models.Model):
-    _name = 'sms.config'
+    _name = 'orange.sms.config'
     _description = 'SMS Configuration'
 
     login = fields.Char('Login')
